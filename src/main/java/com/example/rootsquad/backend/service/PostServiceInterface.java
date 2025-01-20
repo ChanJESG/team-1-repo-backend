@@ -1,0 +1,17 @@
+package com.example.rootsquad.backend.service;
+
+import com.example.rootsquad.backend.model.Post;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface PostServiceInterface {
+    public Post save (Post post);
+    public List<Post> findAllPosts();
+    public Post update(Post post);
+    public void delete(Long id);
+    public Optional<Post> findById(Long id);
+    public List<Post> findByTopicId(Long TopicId);
+    public List<Post> findByCategoryId(Long CategoryId);
+
+}
