@@ -64,8 +64,16 @@ public class CommentController {
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
 
+    // get comment by id
+    @GetMapping("/comment={commentId}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable("commentId") Long commentId) {
+        Comment comment = commentService.findById(commentId).orElseThrow(()-> new ResourceNotFoundException());
+
+        return new ResponseEntity<>(comment, HttpStatus.OK);
+    }
+
     // get comments list by postId
-    @GetMapping("/{postId}")
+    @GetMapping("/post={postId}")
     public ResponseEntity<Object> getCommentsByPostId(@PathVariable("postId") Long postId) {
         List<Comment> commentList = commentService.findByPostId(postId);
 
@@ -75,4 +83,12 @@ public class CommentController {
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
 
+    // delete comment
+    @DeleteMapping("/comment={commentId}")
+    public ResponseEntity<Comment> deleteCommentById(@PathVariable("commentId") Long commentId) {
+        Comment deletedComment = commentService.findById(commentId).orElseThrow(()-> new ResourceNotFoundException());
+
+        commentService.delete(commentId);
+        return new ResponseEntity<>(deletedComment,HttpStatus.OK);
+    }
 }

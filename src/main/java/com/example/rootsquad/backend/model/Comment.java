@@ -1,5 +1,9 @@
 package com.example.rootsquad.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,8 +19,9 @@ public class Comment {
     @NotBlank(message = "Please enter a comment.")
     private String commentBody;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JsonIncludeProperties("id")
     private Post post;
 
     /*@ManyToOne

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.spi.ResolveResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -41,10 +42,11 @@ public class PostController {
 
         if(image != null) {
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-            File imageFile = new File(uploadDir + File.separator + fileName);
+            String filePath = uploadDir + File.separator + fileName;
+            File imageFile = new File(filePath);
             image.transferTo(imageFile.toPath());
 
-            postDto.setImageUrl(String.format("/%s/%s",uploadDir, fileName));
+            postDto.setImageUrl(filePath);
         }
 
         Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException());
@@ -56,8 +58,31 @@ public class PostController {
         savedPost.setDescription(postDto.getDescription());
         savedPost.setCategory(category);
         savedPost.setTopic(topic);
+        savedPost.setImageUrl(postDto.getImageUrl());
 
         return new ResponseEntity<>(postService.save(savedPost), HttpStatus.CREATED);
+    }
+
+    // updating a post
+    @PutMapping("/post={id}")
+    public ResponseEntity<Post> updatePost(@PathVariable("id") Long id, @RequestParam("postData") String postData) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        PostDto postDto = objectMapper.readValue(postData, PostDto.class);
+
+        Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException());
+        Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException());
+
+        Post updatedPost = postService.findById(id).map(foundPost-> {
+            foundPost.setTitle(postDto.getTitle());
+            foundPost.setDescription(postDto.getDescription());
+            foundPost.setCategory(category);
+            foundPost.setTopic(topic);
+
+            return postService.update(foundPost);
+        }).orElseThrow(()-> new ResourceNotFoundException());
+
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
     }
 
     // getting all posts
