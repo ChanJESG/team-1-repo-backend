@@ -2,6 +2,7 @@ package com.example.rootsquad.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
@@ -45,6 +46,7 @@ public class Post {
 
     /*@ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIncludeProperties("id")
     private User user;*/
 
     public Post() {

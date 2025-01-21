@@ -91,4 +91,6 @@ public class CommentController {
         commentService.delete(commentId);
         return new ResponseEntity<>(deletedComment,HttpStatus.OK);
     }
+
+    // TODO get comments by user id
 }

@@ -1,6 +1,7 @@
 package com.example.rootsquad.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
-    @NotBlank(message = "Please enter a valid username.")
+    @NotBlank(message = "Username cannot be blank.")
     private String userName;
     @Column
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
@@ -26,6 +27,10 @@ public class User {
             message = "email is invalid.")
     @NotBlank(message = "email cannot be blank.")
     private String email;
+
+    @Column
+    @NotBlank(message = "Password cannot be blank.")
+    private String password;
     @Column
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,12 +40,11 @@ public class User {
     private String userBio;
     @Column
     private String userProfileImage;
-    private String password;
-
 
     /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonIgnore
+    @JsonIncludeProperties("id")
     private List<Post> postList;*/
+
     /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
     private List<Comment> commentList;*/

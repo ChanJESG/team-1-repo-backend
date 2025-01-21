@@ -42,7 +42,8 @@ public class PostController {
         ObjectMapper objectMapper = new ObjectMapper();
         PostDto postDto = objectMapper.readValue(postData, PostDto.class);
 
-        if(image != null && image.getContentType().equalsIgnoreCase("jpeg/jpg/png")) {
+        // && image.getContentType().equalsIgnoreCase("jpeg/jpg/png")
+        if(image != null) {
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
             String filePath = uploadDir + File.separator + fileName;
             File imageFile = new File(filePath);
@@ -72,14 +73,9 @@ public class PostController {
 
         PostDto postDto = objectMapper.readValue(postData, PostDto.class);
 
-        Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Category not found."));
-        Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException("Topic not found."));
-
         Post updatedPost = postService.findById(id).map(foundPost-> {
             foundPost.setTitle(postDto.getTitle());
             foundPost.setDescription(postDto.getDescription());
-            foundPost.setCategory(category);
-            foundPost.setTopic(topic);
 
             return postService.update(foundPost);
         }).orElseThrow(()-> new ResourceNotFoundException());
@@ -130,4 +126,6 @@ public class PostController {
 
         return new ResponseEntity<>(deletedPost, HttpStatus.OK);
     }
+
+    // TODO get posts by user id
 }
