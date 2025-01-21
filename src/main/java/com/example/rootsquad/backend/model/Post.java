@@ -23,7 +23,6 @@ public class Post {
     @Column
     @NotBlank(message = "Please enter a post description.")
     private String description;
-    @Column
     private long likes;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

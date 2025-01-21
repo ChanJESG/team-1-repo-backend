@@ -34,13 +34,15 @@ public class PostController {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+
+    // TODO validation for image type
     // adding new post
     @PostMapping
     public ResponseEntity<Post> addPost(@RequestParam("postData") String postData, @Nullable @RequestParam("image") MultipartFile image) throws IOException, ResourceNotFoundException {
         ObjectMapper objectMapper = new ObjectMapper();
         PostDto postDto = objectMapper.readValue(postData, PostDto.class);
 
-        if(image != null) {
+        if(image != null && image.getContentType().equalsIgnoreCase("jpeg/jpg/png")) {
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
             String filePath = uploadDir + File.separator + fileName;
             File imageFile = new File(filePath);
@@ -49,8 +51,8 @@ public class PostController {
             postDto.setImageUrl(filePath);
         }
 
-        Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException());
-        Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException());
+        Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Category not found."));
+        Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException("Topic not found."));
 
         Post savedPost = new Post();
 
@@ -70,8 +72,8 @@ public class PostController {
 
         PostDto postDto = objectMapper.readValue(postData, PostDto.class);
 
-        Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException());
-        Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException());
+        Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Category not found."));
+        Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException("Topic not found."));
 
         Post updatedPost = postService.findById(id).map(foundPost-> {
             foundPost.setTitle(postDto.getTitle());
