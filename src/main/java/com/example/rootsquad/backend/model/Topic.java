@@ -1,5 +1,6 @@
 package com.example.rootsquad.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -18,6 +19,7 @@ public class Topic {
     private String name;
 
     @OneToMany(mappedBy = "topic")
+    @JsonIgnore
     private List<Post> postList;
 
     public Topic() {

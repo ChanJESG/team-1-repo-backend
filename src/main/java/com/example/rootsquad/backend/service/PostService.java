@@ -12,7 +12,7 @@ import java.util.Optional;
 public class PostService implements PostServiceInterface {
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
     @Override
     public Post save(Post post) {
@@ -20,7 +20,7 @@ public class PostService implements PostServiceInterface {
     }
 
     @Override
-    public List<Post> findAllPosts() {
+    public List<Post> findAll() {
         return postRepository.findAll();
     }
 

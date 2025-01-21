@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,11 +25,13 @@ public class Post {
     private String description;
     @Column
     private long likes;
-    @Column
-    @NotBlank(message = "Please enter a datetime.")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime datetime;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private String imageUrl;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList;
 
     @ManyToOne
@@ -41,17 +44,18 @@ public class Post {
     @JsonIgnoreProperties("postList")
     private Category category;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User user;*/
 
     public Post() {
     }
 
-    public Post(String title, String description, LocalDateTime datetime) {
+    public Post(String title, String description, Topic topic, Category category) {
         this.title = title;
         this.description = description;
-        this.datetime = datetime;
+        this.topic = topic;
+        this.category = category;
     }
 
     public String getTitle() {
@@ -93,4 +97,44 @@ public class Post {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    /*public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }*/
 }

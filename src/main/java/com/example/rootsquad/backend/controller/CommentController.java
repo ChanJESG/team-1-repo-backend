@@ -1,0 +1,78 @@
+package com.example.rootsquad.backend.controller;
+
+import com.example.rootsquad.backend.dto.CommentDto;
+import com.example.rootsquad.backend.exception.ResourceNotFoundException;
+import com.example.rootsquad.backend.model.Comment;
+import com.example.rootsquad.backend.model.Post;
+import com.example.rootsquad.backend.service.CommentServiceInterface;
+import com.example.rootsquad.backend.service.PostServiceInterface;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+
+@RestController
+@RequestMapping("/comment")
+public class CommentController {
+
+    @Autowired
+    PostServiceInterface postService;
+    @Autowired
+    CommentServiceInterface commentService;
+
+    // create new comment via postId
+    @PostMapping("/post={postId}")
+    public ResponseEntity<Comment> addComment(@PathVariable("postId") Long postId, @RequestParam("commentData") String commentData) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CommentDto commentDto = objectMapper.readValue(commentData, CommentDto.class);
+        Post post = postService.findById(postId).orElseThrow(()-> new ResourceNotFoundException());
+
+        Comment savedComment = new Comment();
+        savedComment.setCommentBody(commentDto.getCommentBody());
+        savedComment.setPost(post);
+
+        return new ResponseEntity<>(commentService.save(savedComment), HttpStatus.CREATED);
+    }
+
+    // update comment
+    @PutMapping("/comment={commentId}")
+    public ResponseEntity<Comment> updateComment(@PathVariable("commentId") Long commentId, @RequestParam("commentData") String commentData) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CommentDto commentDto = objectMapper.readValue(commentData, CommentDto.class);
+
+        Comment updatedComment = commentService.findById(commentId).map(foundComment -> {
+            foundComment.setCommentBody(commentDto.getCommentBody());
+
+            return commentService.update(foundComment);
+        }).orElseThrow(()-> new ResourceNotFoundException());
+
+        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
+    }
+
+    // get comments list
+    @GetMapping
+    public ResponseEntity<Object> getComments() {
+        List<Comment> commentList = commentService.findAll();
+
+        if(commentList.isEmpty())
+            throw new ResourceNotFoundException();
+
+        return new ResponseEntity<>(commentList, HttpStatus.OK);
+    }
+
+    // get comments list by postId
+    @GetMapping("/{postId}")
+    public ResponseEntity<Object> getCommentsByPostId(@PathVariable("postId") Long postId) {
+        List<Comment> commentList = commentService.findByPostId(postId);
+
+        if(commentList.isEmpty())
+            throw new ResourceNotFoundException();
+
+        return new ResponseEntity<>(commentList, HttpStatus.OK);
+    }
+
+}

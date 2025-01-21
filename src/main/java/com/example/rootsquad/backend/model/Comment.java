@@ -19,15 +19,16 @@ public class Comment {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User user;*/
 
     public Comment() {
     }
 
-    public Comment(String commentBody) {
+    public Comment(String commentBody, Post post) {
         this.commentBody = commentBody;
+        this.post = post;
     }
 
     public long getId() {
@@ -54,11 +55,11 @@ public class Comment {
         this.post = post;
     }
 
-    public User getUser() {
+    /*public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
+    }*/
 }

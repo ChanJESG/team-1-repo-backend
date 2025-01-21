@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CommentServiceInterface {
     public Comment save(Comment comment);
-    public List<Comment> findAllComments();
+    public List<Comment> findAll();
     public Comment update(Comment comment);
     public void delete(Long id);
     public Optional<Comment> findById(Long id);
