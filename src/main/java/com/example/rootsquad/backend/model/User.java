@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -41,6 +42,11 @@ public class User {
     @Column
     private String userProfileImage;
 
+    @Column(name="role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role cannot be blank.")
+    private EnumRole role;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIncludeProperties("id")
     private List<Post> postList;
@@ -53,10 +59,11 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String email, String password) {
+    public User(String userName, String email, String password, EnumRole role) {
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public long getId() {
@@ -115,19 +122,27 @@ public class User {
         this.createdDateTime = createdDateTime;
     }
 
-    /*public List<Post> getPostList() {
+    public List<Post> getPostList() {
         return postList;
     }
 
     public void setPostList(List<Post> postList) {
         this.postList = postList;
-    }*/
+    }
 
-    /*public List<Comment> getCommentList() {
+    public List<Comment> getCommentList() {
         return commentList;
     }
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
-    }*/
+    }
+
+    public EnumRole getRole() {
+        return role;
+    }
+
+    public void setRole(EnumRole role) {
+        this.role = role;
+    }
 }

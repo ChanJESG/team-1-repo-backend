@@ -8,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/topic")
-public class TopicController {
+@RequestMapping("/auth/api/topic")
+public class AdminTopicController {
 
     @Autowired
     TopicServiceInterface topicService;
@@ -37,27 +35,6 @@ public class TopicController {
         return new ResponseEntity<>(updatedTopic, HttpStatus.OK);
     }
 
-    // getting all topics
-    @GetMapping
-    public ResponseEntity<Object> getTopics() {
-        List<Topic> topics = topicService.findAll();
-
-        if (topics.isEmpty())
-            throw new ResourceNotFoundException();
-
-        return new ResponseEntity<>(topics, HttpStatus.OK);
-    }
-
-
-    // getting topic by id
-    @GetMapping("/{id}")
-    public ResponseEntity<Topic> getTopicById(@PathVariable("id") Long id) {
-        Topic topic = topicService.findById(id).orElseThrow(()-> new ResourceNotFoundException());
-
-        return new ResponseEntity<>(topic, HttpStatus.OK);
-    }
-
-
     // deleting topic by id
     @DeleteMapping("/{id}")
     public ResponseEntity<Topic> deleteTopicById(@PathVariable("id") Long id) {
@@ -69,4 +46,6 @@ public class TopicController {
 
         return new ResponseEntity<>(deletedTopic, HttpStatus.OK);
     }
+
+
 }
