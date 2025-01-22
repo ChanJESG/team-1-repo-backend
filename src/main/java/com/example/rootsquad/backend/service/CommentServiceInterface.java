@@ -12,4 +12,5 @@ public interface CommentServiceInterface {
     public void delete(Long id);
     public Optional<Comment> findById(Long id);
     public List<Comment> findByPostId(Long id);
+    public List<Comment> findByUserId(Long id);
 }

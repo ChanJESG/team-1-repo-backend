@@ -48,4 +48,9 @@ public class PostService implements PostServiceInterface {
     public List<Post> findByCategoryId(Long categoryId) {
         return postRepository.findByCategoryId(categoryId);
     }
+
+    @Override
+    public List<Post> findByUserId(Long userId) {
+        return postRepository.findByUserId(userId);
+    }
 }

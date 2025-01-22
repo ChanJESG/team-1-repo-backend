@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +28,11 @@ public class Post {
     private long likes;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime datetime;
+    private LocalDateTime dateTimeCreation;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime dateTimeUpdate;
 
     private String imageUrl;
 
@@ -35,19 +40,19 @@ public class Post {
     private List<Comment> commentList;
 
     @ManyToOne
-    @JoinColumn(name = "topic_id", referencedColumnName = "id")
+    @JoinColumn(name = "topic_id", foreignKey = @ForeignKey(name = "fk_topic_id"), referencedColumnName = "id")
     @JsonIgnoreProperties("postList")
     private Topic topic;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_category_id"), referencedColumnName = "id")
     @JsonIgnoreProperties("postList")
     private Category category;
 
-    /*@ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id")
     @JsonIncludeProperties("id")
-    private User user;*/
+    private User user;
 
     public Post() {
     }
@@ -73,14 +78,6 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDateTime getDatetime() {
-        return datetime;
-    }
-
-    public void setDatetime(LocalDateTime datetime) {
-        this.datetime = datetime;
     }
 
     public Topic getTopic() {
@@ -131,11 +128,27 @@ public class Post {
         this.commentList = commentList;
     }
 
-    /*public User getUser() {
+    public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }*/
+    }
+
+    public LocalDateTime getDateTimeCreation() {
+        return dateTimeCreation;
+    }
+
+    public void setDateTimeCreation(LocalDateTime dateTimeCreation) {
+        this.dateTimeCreation = dateTimeCreation;
+    }
+
+    public LocalDateTime getDateTimeUpdate() {
+        return dateTimeUpdate;
+    }
+
+    public void setDateTimeUpdate(LocalDateTime dateTimeUpdate) {
+        this.dateTimeUpdate = dateTimeUpdate;
+    }
 }

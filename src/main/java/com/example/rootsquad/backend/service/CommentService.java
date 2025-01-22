@@ -43,4 +43,9 @@ public class CommentService implements CommentServiceInterface{
     public List<Comment> findByPostId(Long id) {
         return commentRepository.findByPostId(id);
     }
+
+    @Override
+    public List<Comment> findByUserId(Long id) {
+        return commentRepository.findByUserId(id);
+    }
 }

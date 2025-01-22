@@ -11,7 +11,8 @@ public interface PostServiceInterface {
     public Post update(Post post);
     public void delete(Long id);
     public Optional<Post> findById(Long id);
-    public List<Post> findByTopicId(Long TopicId);
-    public List<Post> findByCategoryId(Long CategoryId);
+    public List<Post> findByTopicId(Long topicId);
+    public List<Post> findByCategoryId(Long categoryId);
+    public List<Post> findByUserId(Long userId);
 
 }

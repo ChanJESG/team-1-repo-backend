@@ -41,13 +41,13 @@ public class User {
     @Column
     private String userProfileImage;
 
-    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIncludeProperties("id")
-    private List<Post> postList;*/
+    private List<Post> postList;
 
-    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonIgnore
-    private List<Comment> commentList;*/
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIncludeProperties("id")
+    private List<Comment> commentList;
 
 
     public User() {

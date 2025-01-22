@@ -4,8 +4,10 @@ import com.example.rootsquad.backend.dto.CommentDto;
 import com.example.rootsquad.backend.exception.ResourceNotFoundException;
 import com.example.rootsquad.backend.model.Comment;
 import com.example.rootsquad.backend.model.Post;
+import com.example.rootsquad.backend.model.User;
 import com.example.rootsquad.backend.service.CommentServiceInterface;
 import com.example.rootsquad.backend.service.PostServiceInterface;
+import com.example.rootsquad.backend.service.UserServiceInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ public class CommentController {
     PostServiceInterface postService;
     @Autowired
     CommentServiceInterface commentService;
+    @Autowired
+    UserServiceInterface userService;
 
     // create new comment via postId
     @PostMapping("/post={postId}")
@@ -30,10 +34,12 @@ public class CommentController {
         ObjectMapper objectMapper = new ObjectMapper();
         CommentDto commentDto = objectMapper.readValue(commentData, CommentDto.class);
         Post post = postService.findById(postId).orElseThrow(()-> new ResourceNotFoundException());
+        User user = userService.findById(commentDto.getUserId()).orElseThrow(()-> new ResourceNotFoundException());
 
         Comment savedComment = new Comment();
         savedComment.setCommentBody(commentDto.getCommentBody());
         savedComment.setPost(post);
+        savedComment.setUser(user);
 
         return new ResponseEntity<>(commentService.save(savedComment), HttpStatus.CREATED);
     }
@@ -83,6 +89,17 @@ public class CommentController {
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
 
+    // get comments list by userId
+    @GetMapping("/user={userId}")
+    public ResponseEntity<Object> getCommentsByUserId(@PathVariable("userId") Long userId) {
+        List<Comment> commentList = commentService.findByUserId(userId);
+
+        if (commentList.isEmpty())
+            throw new ResourceNotFoundException();
+
+        return new ResponseEntity<>(commentList, HttpStatus.OK);
+    }
+
     // delete comment
     @DeleteMapping("/comment={commentId}")
     public ResponseEntity<Comment> deleteCommentById(@PathVariable("commentId") Long commentId) {
@@ -91,6 +108,4 @@ public class CommentController {
         commentService.delete(commentId);
         return new ResponseEntity<>(deletedComment,HttpStatus.OK);
     }
-
-    // TODO get comments by user id
 }

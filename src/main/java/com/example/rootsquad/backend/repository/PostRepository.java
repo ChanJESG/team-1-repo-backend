@@ -9,4 +9,6 @@ public interface PostRepository extends ListCrudRepository<Post, Long> {
     List<Post> findByCategoryId(Long id);
 
     List<Post> findByTopicId(Long id);
+
+    List<Post> findByUserId(Long id);
 }

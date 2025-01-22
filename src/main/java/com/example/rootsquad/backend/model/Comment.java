@@ -20,13 +20,14 @@ public class Comment {
     private String commentBody;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_post_id"), referencedColumnName = "id")
     @JsonIncludeProperties("id")
     private Post post;
 
-    /*@ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;*/
+    @ManyToOne
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id")
+    @JsonIncludeProperties("id")
+    private User user;
 
     public Comment() {
     }
@@ -60,11 +61,11 @@ public class Comment {
         this.post = post;
     }
 
-    /*public User getUser() {
+    public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }*/
+    }
 }

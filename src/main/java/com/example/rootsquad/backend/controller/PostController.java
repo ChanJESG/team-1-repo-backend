@@ -5,9 +5,8 @@ import com.example.rootsquad.backend.exception.ResourceNotFoundException;
 import com.example.rootsquad.backend.model.Category;
 import com.example.rootsquad.backend.model.Post;
 import com.example.rootsquad.backend.model.Topic;
-import com.example.rootsquad.backend.service.CategoryServiceInterface;
-import com.example.rootsquad.backend.service.PostServiceInterface;
-import com.example.rootsquad.backend.service.TopicServiceInterface;
+import com.example.rootsquad.backend.model.User;
+import com.example.rootsquad.backend.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.*;
@@ -30,6 +29,8 @@ public class PostController {
     CategoryServiceInterface categoryService;
     @Autowired
     TopicServiceInterface topicService;
+    @Autowired
+    UserServiceInterface userService;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -54,6 +55,7 @@ public class PostController {
 
         Category category = categoryService.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Category not found."));
         Topic topic = topicService.findById(postDto.getTopicId()).orElseThrow(()-> new ResourceNotFoundException("Topic not found."));
+        User user = userService.findById(postDto.getUserId()).orElseThrow(()-> new ResourceNotFoundException("User not found."));
 
         Post savedPost = new Post();
 
@@ -61,6 +63,7 @@ public class PostController {
         savedPost.setDescription(postDto.getDescription());
         savedPost.setCategory(category);
         savedPost.setTopic(topic);
+        savedPost.setUser(user);
         savedPost.setImageUrl(postDto.getImageUrl());
 
         return new ResponseEntity<>(postService.save(savedPost), HttpStatus.CREATED);
@@ -118,6 +121,14 @@ public class PostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
+    // get posts by user Id
+    @GetMapping("/user={userId}")
+    public ResponseEntity<Object> getPostByUserId(@PathVariable("userId") Long userId) {
+        List<Post> postList = postService.findByUserId(userId);
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+
     // deleting a post
     @DeleteMapping("/post={id}")
     public ResponseEntity<Post> deletePost (@PathVariable("id") Long id) {
@@ -127,5 +138,5 @@ public class PostController {
         return new ResponseEntity<>(deletedPost, HttpStatus.OK);
     }
 
-    // TODO get posts by user id
+
 }
