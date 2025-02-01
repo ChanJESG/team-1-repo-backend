@@ -15,14 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.naming.spi.ResolveResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/post")
-public class PostController {
+@RequestMapping("/restricted/api/post")
+public class RestrictedPostController {
     @Autowired
     PostServiceInterface postService;
     @Autowired

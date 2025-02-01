@@ -1,11 +1,6 @@
 package com.example.rootsquad.backend.dto;
 
-import com.example.rootsquad.backend.model.User;
-import com.example.rootsquad.backend.service.UserService;
-import com.example.rootsquad.backend.service.UserServiceInterface;
-
-import java.util.List;
-import java.util.Optional;
+import com.example.rootsquad.backend.model.EnumRole;
 
 public class UserDto {
     private String name;
@@ -13,21 +8,24 @@ public class UserDto {
     private String password;
     private String userBio;
     private String profilePicUrl;
+    private EnumRole role;
     public UserDto() {
     }
 
-    public UserDto(String name, String email, String password) {
+    public UserDto(String name, String email, String password, EnumRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
-    public UserDto(String name, String email, String password, String userBio, String profilePicUrl) {
+    public UserDto(String name, String email, String password, String userBio, String profilePicUrl, EnumRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.userBio = userBio;
         this.profilePicUrl = profilePicUrl;
+        this.role = role;
     }
 
     public String getName() {
@@ -68,5 +66,13 @@ public class UserDto {
 
     public void setProfilePicUrl(String profilePicUrl) {
         this.profilePicUrl = profilePicUrl;
+    }
+
+    public EnumRole getRole() {
+        return role;
+    }
+
+    public void setRole(EnumRole role) {
+        this.role = role;
     }
 }

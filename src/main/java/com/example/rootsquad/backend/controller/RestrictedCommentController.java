@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comment")
-public class CommentController {
+@RequestMapping("/restricted/api/comment")
+public class RestrictedCommentController {
 
     @Autowired
     PostServiceInterface postService;
