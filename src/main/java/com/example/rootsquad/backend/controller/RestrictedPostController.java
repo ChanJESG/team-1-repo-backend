@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restricted/api/post")
+@RequestMapping("/public/api/post")                     // TODO change back to restricted after auth complete
 public class RestrictedPostController {
     @Autowired
     PostServiceInterface postService;
