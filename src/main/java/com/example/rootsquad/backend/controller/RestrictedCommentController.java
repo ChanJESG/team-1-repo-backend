@@ -18,7 +18,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restricted/api/comment")
+// TODO change back to restricted after auth complete
+@RequestMapping("/public/api/comment")
 public class RestrictedCommentController {
 
     @Autowired
@@ -29,7 +30,7 @@ public class RestrictedCommentController {
     UserServiceInterface userService;
 
     // create new comment via postId
-    @PostMapping("/post={postId}")
+    @PostMapping("/post/{postId}")
     public ResponseEntity<Comment> addComment(@PathVariable("postId") Long postId, @RequestParam("commentData") String commentData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         CommentDto commentDto = objectMapper.readValue(commentData, CommentDto.class);
@@ -45,7 +46,7 @@ public class RestrictedCommentController {
     }
 
     // update comment
-    @PutMapping("/comment={commentId}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<Comment> updateComment(@PathVariable("commentId") Long commentId, @RequestParam("commentData") String commentData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         CommentDto commentDto = objectMapper.readValue(commentData, CommentDto.class);
@@ -71,7 +72,7 @@ public class RestrictedCommentController {
     }
 
     // get comment by id
-    @GetMapping("/comment={commentId}")
+    @GetMapping("/{commentId}")
     public ResponseEntity<Comment> getCommentById(@PathVariable("commentId") Long commentId) {
         Comment comment = commentService.findById(commentId).orElseThrow(()-> new ResourceNotFoundException());
 
@@ -79,7 +80,7 @@ public class RestrictedCommentController {
     }
 
     // get comments list by postId
-    @GetMapping("/post={postId}")
+    @GetMapping("/post/{postId}")
     public ResponseEntity<Object> getCommentsByPostId(@PathVariable("postId") Long postId) {
         List<Comment> commentList = commentService.findByPostId(postId);
 
@@ -90,7 +91,7 @@ public class RestrictedCommentController {
     }
 
     // get comments list by userId
-    @GetMapping("/user={userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<Object> getCommentsByUserId(@PathVariable("userId") Long userId) {
         List<Comment> commentList = commentService.findByUserId(userId);
 
@@ -101,7 +102,7 @@ public class RestrictedCommentController {
     }
 
     // delete comment
-    @DeleteMapping("/comment={commentId}")
+    @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<Comment> deleteCommentById(@PathVariable("commentId") Long commentId) {
         Comment deletedComment = commentService.findById(commentId).orElseThrow(()-> new ResourceNotFoundException());
 

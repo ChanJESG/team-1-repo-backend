@@ -21,8 +21,7 @@ public class Post {
     @Column
     @NotBlank(message = "Please enter a title.")
     private String title;
-    @Lob
-    @Column
+    @Column(columnDefinition = "TEXT")
     @NotBlank(message = "Please enter a post description.")
     private String description;
     private long likes;
@@ -51,7 +50,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id")
-    @JsonIncludeProperties("id")
+    @JsonIncludeProperties({"id", "userName"})
     private User user;
 
     public Post() {

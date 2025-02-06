@@ -69,7 +69,7 @@ public class RestrictedPostController {
     }
 
     // updating a post
-    @PutMapping("/post={id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable("id") Long id, @RequestParam("postData") String postData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -97,7 +97,7 @@ public class RestrictedPostController {
     }
 
     // getting post by Id
-    @GetMapping("/post={id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
         Post post = postService.findById(id).orElseThrow(()-> new ResourceNotFoundException());
 

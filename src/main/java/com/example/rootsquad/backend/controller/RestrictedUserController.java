@@ -19,7 +19,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+// TODO change back to restricted except for add user
+@RequestMapping("/public/api/user")
 public class RestrictedUserController {
 
     @Autowired
@@ -30,9 +31,8 @@ public class RestrictedUserController {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    // adding new user
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestParam("userData") String userData) throws IOException {
+    public ResponseEntity<User> addUser(@RequestParam("userData") String userData, @Nullable @RequestParam("image")MultipartFile image ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto = objectMapper.readValue(userData, UserDto.class);
 
@@ -41,6 +41,16 @@ public class RestrictedUserController {
         savedUser.setUserName(userDto.getName());
         savedUser.setEmail(userDto.getEmail());
         savedUser.setPassword(userDto.getPassword());
+        savedUser.setRole(userDto.getRole());
+
+        if (image!= null) {
+            String fileName = "profile_" + System.currentTimeMillis()+ "_" + image.getOriginalFilename();
+            String filePath = uploadDir + File.separator + fileName;
+            File imageFile = new File(filePath);
+            image.transferTo(imageFile.toPath());
+
+            savedUser.setUserProfileImage(filePath);
+        }
 
         return new ResponseEntity<>(userService.save(savedUser), HttpStatus.CREATED);
     }
@@ -98,8 +108,6 @@ public class RestrictedUserController {
 
         return new ResponseEntity<>(deletedUser, HttpStatus.OK);
     }
-
-
 }
 
 
