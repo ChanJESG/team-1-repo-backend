@@ -105,7 +105,7 @@ public class RestrictedPostController {
     }
 
     // getting posts by category Id
-    @GetMapping("/category={categoryId}")
+    @GetMapping("/category/{categoryId}")
     public ResponseEntity<Object> getPostByCategoryId(@PathVariable("categoryId") Long categoryId) {
         List<Post> postList = postService.findByCategoryId(categoryId);
 
@@ -113,7 +113,7 @@ public class RestrictedPostController {
     }
 
     // getting posts by topic Id
-    @GetMapping("/topic={topicId}")
+    @GetMapping("/topic/{topicId}")
     public ResponseEntity<Object> getPostByTopicId(@PathVariable("topicId") Long topicId) {
         List<Post> postList = postService.findByTopicId(topicId);
 
@@ -121,9 +121,33 @@ public class RestrictedPostController {
     }
 
     // get posts by user Id
-    @GetMapping("/user={userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<Object> getPostByUserId(@PathVariable("userId") Long userId) {
         List<Post> postList = postService.findByUserId(userId);
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+
+    // get posts by query
+    @GetMapping("/search/{searchTerm}")
+    public ResponseEntity<Object> getPostByTitleContainingOrDescriptionContaining(@PathVariable("searchTerm") String searchTerm, @PathVariable("searchTerm") String searchTerm2) {
+        List<Post> postList = postService.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm2);
+
+        return new ResponseEntity<>(postList,HttpStatus.OK);
+    }
+
+    // get posts by query and topic id
+    @GetMapping("/search/{searchTerm}/topic/{topicId}")
+    public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndTopicIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("searchTerm") String searchTerm2, @PathVariable("topicId") Long topicId) {
+        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, searchTerm2, topicId);
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+
+    // get posts by query and category id
+    @GetMapping("/search/{searchTerm}/category/{categoryId}")
+    public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("searchTerm") String searchTerm2, @PathVariable("categoryId") Long categoryId) {
+        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, searchTerm2, categoryId);
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }

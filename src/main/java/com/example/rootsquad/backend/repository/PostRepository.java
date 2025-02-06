@@ -11,4 +11,10 @@ public interface PostRepository extends ListCrudRepository<Post, Long> {
     List<Post> findByTopicId(Long id);
 
     List<Post> findByUserId(Long id);
+
+    List<Post> findByTitleContainingOrDescriptionContaining(String searchTerm, String searchTerm2);
+
+    List<Post> findByTitleContainingOrDescriptionContainingAndTopicIdIs(String searchTerm, String searchTerm2, Long topicId);
+
+    List<Post> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(String searchTerm, String searchTerm2, Long categoryId);
 }
