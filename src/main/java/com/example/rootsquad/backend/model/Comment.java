@@ -26,7 +26,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id")
-    @JsonIncludeProperties("id")
+    @JsonIncludeProperties({"id", "userName", "userProfileImage"})
     private User user;
 
     public Comment() {
