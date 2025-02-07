@@ -35,7 +35,6 @@ public class Post {
 
     private String imageUrl;
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList;
 
