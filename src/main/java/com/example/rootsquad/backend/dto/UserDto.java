@@ -19,7 +19,7 @@ public class UserDto {
     private String token;
     private String refreshToken;
     private String expirationTime;
-    @JsonIgnore
+    /*@JsonIgnore*/
     private User user;
     public UserDto() {
     }
