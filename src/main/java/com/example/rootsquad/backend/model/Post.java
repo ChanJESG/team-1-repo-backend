@@ -50,7 +50,7 @@ public class Post {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIncludeProperties({"id", "userName"})
     private User user;
 

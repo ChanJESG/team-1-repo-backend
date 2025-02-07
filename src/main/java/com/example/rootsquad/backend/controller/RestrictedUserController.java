@@ -71,7 +71,7 @@ public class RestrictedUserController {
     }
 
     // update a user
-    @PutMapping("/user={id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestParam("userData") String userData, @Nullable @RequestParam("image")MultipartFile image) throws IOException{
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto = objectMapper.readValue(userData, UserDto.class);
@@ -106,7 +106,6 @@ public class RestrictedUserController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-
     // get user by id
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
@@ -115,6 +114,13 @@ public class RestrictedUserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // get user by email
+    @GetMapping("/email")
+    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+        User user = userService.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException());
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
     // delete user
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUserById(@PathVariable("id") Long id) {
