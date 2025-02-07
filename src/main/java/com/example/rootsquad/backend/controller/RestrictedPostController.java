@@ -97,7 +97,7 @@ public class RestrictedPostController {
     }
 
     // getting post by Id
-    @GetMapping("/{id}")
+    @GetMapping("/search/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
         Post post = postService.findById(id).orElseThrow(()-> new ResourceNotFoundException());
 
@@ -105,7 +105,7 @@ public class RestrictedPostController {
     }
 
     // getting posts by category Id
-    @GetMapping("/category/{categoryId}")
+    @GetMapping("/search/category/{categoryId}")
     public ResponseEntity<Object> getPostByCategoryId(@PathVariable("categoryId") Long categoryId) {
         List<Post> postList = postService.findByCategoryId(categoryId);
 
@@ -113,7 +113,7 @@ public class RestrictedPostController {
     }
 
     // getting posts by topic Id
-    @GetMapping("/topic/{topicId}")
+    @GetMapping("/search/topic/{topicId}")
     public ResponseEntity<Object> getPostByTopicId(@PathVariable("topicId") Long topicId) {
         List<Post> postList = postService.findByTopicId(topicId);
 
@@ -121,7 +121,7 @@ public class RestrictedPostController {
     }
 
     // get posts by user Id
-    @GetMapping("/user/{userId}")
+    @GetMapping("/search/user/{userId}")
     public ResponseEntity<Object> getPostByUserId(@PathVariable("userId") Long userId) {
         List<Post> postList = postService.findByUserId(userId);
 
@@ -129,7 +129,7 @@ public class RestrictedPostController {
     }
 
     // get posts by query
-    @GetMapping("/search/{searchTerm}")
+    @GetMapping("/search?query={searchTerm}")
     public ResponseEntity<Object> getPostByTitleContainingOrDescriptionContaining(@PathVariable("searchTerm") String searchTerm, @PathVariable("searchTerm") String searchTerm2) {
         List<Post> postList = postService.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm2);
 
@@ -137,7 +137,7 @@ public class RestrictedPostController {
     }
 
     // get posts by query and topic id
-    @GetMapping("/search/{searchTerm}/topic/{topicId}")
+    @GetMapping("/search/topic/{topicId}?query={searchTerm}")
     public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndTopicIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("searchTerm") String searchTerm2, @PathVariable("topicId") Long topicId) {
         List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, searchTerm2, topicId);
 
@@ -145,7 +145,7 @@ public class RestrictedPostController {
     }
 
     // get posts by query and category id
-    @GetMapping("/search/{searchTerm}/category/{categoryId}")
+    @GetMapping("/search/category/{categoryId}?query={searchTerm}")
     public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("searchTerm") String searchTerm2, @PathVariable("categoryId") Long categoryId) {
         List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, searchTerm2, categoryId);
 
@@ -153,7 +153,7 @@ public class RestrictedPostController {
     }
 
     // deleting a post
-    @DeleteMapping("/post={id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Post> deletePost (@PathVariable("id") Long id) {
         Post deletedPost = postService.findById(id).orElseThrow(()-> new ResourceNotFoundException());
         postService.delete(id);
