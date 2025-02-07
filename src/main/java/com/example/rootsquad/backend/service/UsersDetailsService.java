@@ -1,6 +1,5 @@
 package com.example.rootsquad.backend.service;
 
-import com.example.rootsquad.backend.exception.ResourceNotFoundException;
 import com.example.rootsquad.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
