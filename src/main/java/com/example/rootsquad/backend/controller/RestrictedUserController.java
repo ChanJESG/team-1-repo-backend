@@ -35,7 +35,7 @@ public class RestrictedUserController {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Object> addUser(@RequestParam("userData") String userData, @Nullable @RequestParam("image")MultipartFile image ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         UserDto userDto = objectMapper.readValue(userData, UserDto.class);
