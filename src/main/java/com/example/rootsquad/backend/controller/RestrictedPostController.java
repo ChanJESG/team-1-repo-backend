@@ -132,8 +132,8 @@ public class RestrictedPostController {
     }
 
     // get posts by query
-    @GetMapping("/search/{searchTerm}")
-    public ResponseEntity<Object> getPostByTitleContainingOrDescriptionContaining(@PathVariable("searchTerm") String searchTerm) {
+    @GetMapping("/search/term")
+    public ResponseEntity<Object> getPostByTitleContainingOrDescriptionContaining(@RequestParam(name = "query", defaultValue = "") String searchTerm) {
         List<Post> postList = postService.findByTitleContainingOrDescriptionContaining(searchTerm);
 
         return new ResponseEntity<>(postList,HttpStatus.OK);
