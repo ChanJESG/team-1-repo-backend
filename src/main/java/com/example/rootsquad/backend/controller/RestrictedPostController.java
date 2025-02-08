@@ -9,6 +9,7 @@ import com.example.rootsquad.backend.model.User;
 import com.example.rootsquad.backend.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,8 @@ public class RestrictedPostController {
     TopicServiceInterface topicService;
     @Autowired
     UserServiceInterface userService;
+    @Autowired
+    EntityManager entityManager;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -137,20 +140,39 @@ public class RestrictedPostController {
     }
 
     // get posts by query and topic id
-    @GetMapping("/search/topic/{topicId}/{searchTerm}")
+    @GetMapping("/search/topic/{topicId}/term")
+    public ResponseEntity<Object> findByTopicIdAndQuery(@RequestParam(name = "query", defaultValue = "") String searchTerm, @PathVariable("topicId") Long topicId) {
+        List<Post> postList = entityManager.createNativeQuery("SELECT * FROM post p WHERE " + "(p.description LIKE :searchTerm AND p.topic_id = :topicId) " + "OR (p.title LIKE :searchTerm AND p.topic_id = :topicId)", Post.class)
+                .setParameter("searchTerm", "%" + searchTerm + "%")
+                .setParameter("topicId", topicId)
+                .getResultList();
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+
+    /*@GetMapping("/search/topic/{topicId}/{searchTerm}")
     public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndTopicIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("topicId") Long topicId) {
         List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, topicId);
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
-    }
+    }*/
 
     // get posts by query and category id
-    @GetMapping("/search/category/{categoryId}/{searchTerm}")
+    @GetMapping("/search/category/{categoryId}/term")
+    public ResponseEntity<Object> findByCategoryIdAndQuery(@RequestParam(name = "query", defaultValue = "") String searchTerm, @PathVariable("categoryId") Long categoryId) {
+        List<Post> postList = entityManager.createNativeQuery("SELECT * FROM post p WHERE " + "(p.description LIKE :searchTerm AND p.category_id = :categoryId) " + "OR (p.title LIKE :searchTerm AND p.category_id = :categoryId)", Post.class)
+                .setParameter("searchTerm", "%" + searchTerm + "%")
+                .setParameter("categoryId", categoryId)
+                .getResultList();
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+    /*@GetMapping("/search/category/{categoryId}/{searchTerm}")
     public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("categoryId") Long categoryId) {
         List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, categoryId);
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
-    }
+    }*/
 
     // deleting a post
     @DeleteMapping("/delete/{id}")
