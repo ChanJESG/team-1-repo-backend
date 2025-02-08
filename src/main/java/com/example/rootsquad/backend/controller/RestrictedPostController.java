@@ -131,7 +131,7 @@ public class RestrictedPostController {
     // get posts by query
     @GetMapping("/search/{searchTerm}")
     public ResponseEntity<Object> getPostByTitleContainingOrDescriptionContaining(@PathVariable("searchTerm") String searchTerm) {
-        List<Post> postList = postService.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm);
+        List<Post> postList = postService.findByTitleContainingOrDescriptionContaining(searchTerm);
 
         return new ResponseEntity<>(postList,HttpStatus.OK);
     }
@@ -139,7 +139,7 @@ public class RestrictedPostController {
     // get posts by query and topic id
     @GetMapping("/search/topic/{topicId}/{searchTerm}")
     public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndTopicIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("topicId") Long topicId) {
-        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, searchTerm, topicId);
+        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, topicId);
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
@@ -147,7 +147,7 @@ public class RestrictedPostController {
     // get posts by query and category id
     @GetMapping("/search/category/{categoryId}/{searchTerm}")
     public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("categoryId") Long categoryId) {
-        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, searchTerm, categoryId);
+        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, categoryId);
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }

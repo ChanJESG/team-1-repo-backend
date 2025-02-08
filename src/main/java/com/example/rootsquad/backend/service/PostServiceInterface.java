@@ -14,7 +14,7 @@ public interface PostServiceInterface {
     public List<Post> findByTopicId(Long topicId);
     public List<Post> findByCategoryId(Long categoryId);
     public List<Post> findByUserId(Long userId);
-    List<Post> findByTitleContainingOrDescriptionContaining(String searchTerm, String searchTerm2);
-    List<Post> findByTitleContainingOrDescriptionContainingAndTopicIdIs(String searchTerm, String searchTerm2, Long topicId);
-    List<Post> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(String searchTerm, String searchTerm2, Long categoryId);
+    List<Post> findByTitleContainingOrDescriptionContaining(String searchTerm);
+    List<Post> findByTitleContainingOrDescriptionContainingAndTopicIdIs(String searchTerm, Long topicId);
+    List<Post> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(String searchTerm, Long categoryId);
 }
