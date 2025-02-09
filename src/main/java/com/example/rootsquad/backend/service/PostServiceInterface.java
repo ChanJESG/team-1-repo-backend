@@ -15,6 +15,5 @@ public interface PostServiceInterface {
     public List<Post> findByCategoryId(Long categoryId);
     public List<Post> findByUserId(Long userId);
     List<Post> findByTitleContainingOrDescriptionContaining(String searchTerm);
-    List<Post> findByTitleContainingOrDescriptionContainingAndTopicIdIs(String searchTerm, Long topicId);
-    List<Post> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(String searchTerm, Long categoryId);
+    List<Post> findAllByDescUpdateTime();
 }

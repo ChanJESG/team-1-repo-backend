@@ -150,13 +150,6 @@ public class RestrictedPostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
-    /*@GetMapping("/search/topic/{topicId}/{searchTerm}")
-    public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndTopicIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("topicId") Long topicId) {
-        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, topicId);
-
-        return new ResponseEntity<>(postList, HttpStatus.OK);
-    }*/
-
     // get posts by query and category id
     @GetMapping("/search/category/{categoryId}/term")
     public ResponseEntity<Object> findByCategoryIdAndQuery(@RequestParam(name = "query", defaultValue = "") String searchTerm, @PathVariable("categoryId") Long categoryId) {
@@ -167,12 +160,16 @@ public class RestrictedPostController {
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
-    /*@GetMapping("/search/category/{categoryId}/{searchTerm}")
-    public ResponseEntity<Object> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(@PathVariable("searchTerm") String searchTerm, @PathVariable("categoryId") Long categoryId) {
-        List<Post> postList = postService.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, categoryId);
+
+    // get posts by descending update time
+    @GetMapping("/desc")
+    public ResponseEntity<Object> findAllByDescUpdateTime() {
+        List<Post> postList = postService.findAllByDescUpdateTime();
+        if(postList.isEmpty())
+            throw new ResourceNotFoundException();
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
-    }*/
+    }
 
     // deleting a post
     @DeleteMapping("/delete/{id}")
