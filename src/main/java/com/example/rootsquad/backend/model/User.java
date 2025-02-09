@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @Column
     @NotBlank(message = "Username cannot be blank.")
     private String userName;
-    @Column
+    @Column(unique = true)
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE,
             message = "email is invalid.")
