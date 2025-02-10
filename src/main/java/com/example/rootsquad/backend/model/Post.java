@@ -50,7 +50,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIncludeProperties({"id", "userName"})
+    @JsonIncludeProperties({"id", "userName", "userProfileImage"})
     private User user;
 
     public Post() {
