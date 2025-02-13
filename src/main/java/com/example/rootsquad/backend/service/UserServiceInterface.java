@@ -12,4 +12,5 @@ public interface UserServiceInterface {
     public User update (User user);
     public void delete (Long id);
     public Optional<User> findById(Long id);
+    public Optional<User> findByEmail(String email);
 }

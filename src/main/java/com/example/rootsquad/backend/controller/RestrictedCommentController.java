@@ -30,7 +30,7 @@ public class RestrictedCommentController {
     UserServiceInterface userService;
 
     // create new comment via postId
-    @PostMapping("/post/{postId}")
+    @PostMapping("/add/post/{postId}")
     public ResponseEntity<Comment> addComment(@PathVariable("postId") Long postId, @RequestParam("commentData") String commentData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         CommentDto commentDto = objectMapper.readValue(commentData, CommentDto.class);

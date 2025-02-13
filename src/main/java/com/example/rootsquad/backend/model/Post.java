@@ -35,7 +35,6 @@ public class Post {
 
     private String imageUrl;
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList;
 
@@ -50,8 +49,8 @@ public class Post {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id")
-    @JsonIncludeProperties({"id", "userName"})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIncludeProperties({"id", "userName", "userProfileImage"})
     private User user;
 
     public Post() {

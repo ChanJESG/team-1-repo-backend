@@ -55,18 +55,14 @@ public class PostService implements PostServiceInterface {
     }
 
     @Override
-    public List<Post> findByTitleContainingOrDescriptionContaining(String searchTerm, String searchTerm2) {
-        return postRepository.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm2);
+    public List<Post> findByTitleContainingOrDescriptionContaining(String searchTerm) {
+        return postRepository.findByTitleContainingOrDescriptionContaining(searchTerm, searchTerm);
     }
 
     @Override
-    public List<Post> findByTitleContainingOrDescriptionContainingAndTopicIdIs(String searchTerm, String searchTerm2, Long topicId) {
-        return postRepository.findByTitleContainingOrDescriptionContainingAndTopicIdIs(searchTerm, searchTerm2, topicId);
+    public List<Post> findAllByDescUpdateTime() {
+        return postRepository.findAllByDescUpdateTime();
     }
 
-    @Override
-    public List<Post> findByTitleContainingOrDescriptionContainingAndCategoryIdIs(String searchTerm, String searchTerm2, Long categoryId) {
-        return postRepository.findByTitleContainingOrDescriptionContainingAndCategoryIdIs(searchTerm, searchTerm2, categoryId);
-    }
 
 }

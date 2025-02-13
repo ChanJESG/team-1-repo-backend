@@ -1,7 +1,13 @@
 package com.example.rootsquad.backend.dto;
 
 import com.example.rootsquad.backend.model.EnumRole;
+import com.example.rootsquad.backend.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private String name;
     private String email;
@@ -9,6 +15,12 @@ public class UserDto {
     private String userBio;
     private String profilePicUrl;
     private EnumRole role;
+    private String message;
+    private String token;
+    private String refreshToken;
+    private String expirationTime;
+    /*@JsonIgnore*/
+    private User user;
     public UserDto() {
     }
 
@@ -74,5 +86,45 @@ public class UserDto {
 
     public void setRole(EnumRole role) {
         this.role = role;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(String expirationTime) {
+        this.expirationTime = expirationTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

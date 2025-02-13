@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -15,9 +19,17 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     @NotBlank(message = "Please enter a comment.")
     private String commentBody;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime dateTimeCreation;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime dateTimeUpdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_post_id"), referencedColumnName = "id")
@@ -67,5 +79,21 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getDateTimeCreation() {
+        return dateTimeCreation;
+    }
+
+    public void setDateTimeCreation(LocalDateTime dateTimeCreation) {
+        this.dateTimeCreation = dateTimeCreation;
+    }
+
+    public LocalDateTime getDateTimeUpdate() {
+        return dateTimeUpdate;
+    }
+
+    public void setDateTimeUpdate(LocalDateTime dateTimeUpdate) {
+        this.dateTimeUpdate = dateTimeUpdate;
     }
 }
